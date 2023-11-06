@@ -1,11 +1,11 @@
-FROM openjdk:17-alpine
-LABEL authors="Ameya Mahankala"
-#Export port 8088
-EXPOSE 8088
-#Set a docker volume if you want
-VOLUME /backend_volume
-#Add the jar file
-ADD /target/*.jar containers-example-0.0.1-SNAPSHOT.jar
-#Start the application
+FROM maven:3.9.4-eclipse-temurin-17-alpine AS build
+RUN mkdir -p /app
+WORKDIR /app
+COPY pom.xml /app
+COPY src /app/src
+RUN mvn -B package --file pom.xml -DskipTests
 
-ENTRYPOINT ["java", "-jar", "/containers-example-0.0.1-SNAPSHOT.jar"]
+FROM eclipse-temurin:17-jdk-alpine
+EXPOSE 8383
+COPY --from=build /app/taget/*jar cicd-demo-1.3.jar
+ENTRYPOINT ["java","-jar","cicd-demo-1.3.jar"]
