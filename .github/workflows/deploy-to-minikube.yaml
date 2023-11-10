@@ -1,29 +1,27 @@
-name: CD - Deploy to Minikube using Github Actions
+name: CD - Deploy to Minikube using GitHub Actions
 
 on:
   # Trigger the workflow on push from the master/main branch or on pull request
   push:
-    branches:
-      - master
-  # main
-  # pull_request:
-  #   branches:
-  #     - master
+    branches: [master]
+  pull_request:
+    branches: [master]
 
 jobs:
   # Build job
   job1:
     name: Build and Deploy to Minikube
-    # Run on Ubuntu using the latest version
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Start Minikube
         id: minikube
         uses: medyagh/setup-minikube@latest
 
-      - name: Try the cluster !
+      - name: Try the cluster!
         run: kubectl get pods -A
 
       - name: Build Image
@@ -47,6 +45,8 @@ jobs:
           sleep 5
           kubectl port-forward service/cicd-demo 8383:8383 &> /dev/null &
 
+      - name: Test service endpoints
+        run: |
           curl -i http://localhost:8383/
 
       - name: Cleanup

@@ -5,7 +5,7 @@ metadata:
   labels:
     app: k8s-doc-example
 spec:
-  replicas: 2 #pod count
+  replicas: 2
   selector:
     matchLabels:
       app: k8s-doc-example
@@ -17,9 +17,8 @@ spec:
     spec:
       containers:
         - name: k8s-doc-example
-          image: k8s-doc-example:v1.25.9
+          image: backend/containerdemo:latest
           imagePullPolicy: Never
           ports:
             - containerPort: 8088
       restartPolicy: Always
-      

@@ -8,8 +8,8 @@ spec:
   selector:
     app: k8s-doc-example
   ports:
-    - protocol: "TCP"
-      port: 8088 # where service is running
-      targetPort: 8088 # port exposed by the service
-  type: NodePort # type of service
+    - protocol: TCP
+      port: 8088 #where the service is running.
+      targetPort: 8088 #the port exposed by the service.
+  type: NodePort #type of service
   

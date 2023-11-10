@@ -1,36 +1,42 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: k8s-doc-example
+  name: cicd-demo
   labels:
-    app: k8s-doc-example
+    app: cicd-demo
 spec:
-  replicas: 2
   selector:
     matchLabels:
-      app: k8s-doc-example
+      app: cicd-demo
+  replicas: 1
   template:
     metadata:
+      name: cicd-demo
       labels:
-        app: k8s-doc-example
+        app: cicd-demo
     spec:
       containers:
-        - name: k8s-doc-example
-          image: backend/containerdemo:latest
+        - name: cicd-demo
+          image: local/cicd-demo:latest
+          # Image that will be used inside the container in the cluster
+          imagePullPolicy: Never
           ports:
-            - containerPort: 8088
+            - containerPort: 8383
+              # The port that the container is running on in the cluster
+
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: k8s-doc-example-service
+  name: cicd-demo
   labels:
-    app: k8s-doc-example
+    app: cicd-demo
 spec:
-  selector:
-    app: k8s-doc-example
-  ports:
-    - protocol: TCP
-      port: 8088
-      targetPort: 8088
   type: NodePort
+  selector:
+    app: cicd-demo
+  ports:
+    - name: http
+      port: 8383
+      # The port that the service is running on in the cluster
+      targetPort: 8383
