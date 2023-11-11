@@ -5,7 +5,12 @@ COPY pom.xml /app
 COPY src /app/src
 RUN mvn -B package --file pom.xml -DskipTests
 
+# Fetch the Java
 FROM eclipse-temurin:17-jdk-alpine
+
+# Expose port 8080
 EXPOSE 8080
-COPY --from=build /app/taget/*jar cicd-demo-1.3.jar
+# Add the jar file
+COPY --from=build /app/target/*jar cicd-demo-1.3.jar
+# Start the application
 ENTRYPOINT ["java","-jar","cicd-demo-1.3.jar"]
