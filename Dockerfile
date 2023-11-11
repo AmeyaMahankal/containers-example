@@ -6,6 +6,6 @@ COPY src /app/src
 RUN mvn -B package --file pom.xml -DskipTests
 
 FROM eclipse-temurin:17-jdk-alpine
-EXPOSE 8383
+EXPOSE 8080
 COPY --from=build /app/taget/*jar cicd-demo-1.3.jar
 ENTRYPOINT ["java","-jar","cicd-demo-1.3.jar"]
